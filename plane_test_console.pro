@@ -18,16 +18,16 @@ QMAKE_CXXFLAGS += -std=c++14
 # High warning levels
 QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -Werror
 
+# Debug and release mode
+CONFIG += debug_and_release
 
+# In release mode, define NDEBUG
 CONFIG(release, debug|release) {
 
   DEFINES += NDEBUG
-
-  # gprof
-  QMAKE_CXXFLAGS += -pg
-  QMAKE_LFLAGS += -pg
 }
 
+# In debug mode, turn on gcov and UBSAN
 CONFIG(debug, debug|release) {
 
   # gcov

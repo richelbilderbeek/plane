@@ -6,6 +6,7 @@
 #include <boost/limits.hpp>
 #include <boost/make_shared.hpp>
 
+#include "container.h"
 #include "geometry.h"
 #include "planex.h"
 #include "planey.h"
@@ -244,13 +245,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_plane)
       const Plane p(p1,p2,p3);
       BOOST_CHECK(!p.CanCalcX());
       BOOST_CHECK(!p.CanCalcY());
-      if (!p.CanCalcZ())
-      {
-        TRACE("ERROR");
-        TRACE(z);
-        TRACE(i);
-      }
-
       BOOST_CHECK( p.CanCalcZ());
 
       for (const double j:series)
@@ -270,37 +264,18 @@ BOOST_AUTO_TEST_CASE(test_ribi_plane)
             << (p.CalcError(Coordinat3D(j,j,z)) / p.CalcMaxError(Coordinat3D(j,j,z)))
             << "x)"
           ;
-          TRACE(s.str());
+          std::cerr << s.str() << '\n';
         }
         if (!p.IsInPlane(Coordinat3D(j,j,z)))
         {
           const auto max_error = p.CalcMaxError(Coordinat3D(j,j,z));
           const auto error = p.CalcError(Coordinat3D(j,j,z));
           if (error == 0.0) continue;
-          TRACE(max_error);
-          TRACE(error);
           if (abs(1.0 - (max_error / error)) < 0.01)
           {
             //Allow another percent of freedom
             continue;
           }
-
-          TRACE("ERROR");
-          TRACE(z);
-          TRACE(i);
-          TRACE(j);
-          TRACE(p.CalcError(Coordinat3D(j,j,z)));
-          TRACE(p.CalcMaxError(Coordinat3D(j,j,z)));
-          TRACE(p);
-
-          TRACE("AGAIN");
-          TRACE(z);
-          TRACE(i);
-          TRACE(j);
-          TRACE(p.CalcError(Coordinat3D(j,j,z)));
-          TRACE(p.CalcMaxError(Coordinat3D(j,j,z)));
-          TRACE(p);
-
         }
         BOOST_CHECK(p.IsInPlane(Coordinat3D(  j,  j,z)));
         BOOST_CHECK(p.IsInPlane(Coordinat3D(  j, -j,z)));
@@ -327,13 +302,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_plane)
         const Plane p(p1,p2,p3);
         BOOST_CHECK(!p.CanCalcX());
         BOOST_CHECK(!p.CanCalcY());
-        if (!p.CanCalcZ())
-        {
-          TRACE("ERROR");
-          TRACE(z);
-          TRACE(i);
-        }
-
         BOOST_CHECK( p.CanCalcZ());
 
         for (const double j:series)
@@ -353,27 +321,8 @@ BOOST_AUTO_TEST_CASE(test_ribi_plane)
               << (p.CalcError(Coordinat3D(j,j,z)) / p.CalcMaxError(Coordinat3D(j,j,z)))
               << "x)"
             ;
-            TRACE(s.str());
+            std::cerr << s.str() << '\n';
             //continue;
-          }
-          if (!p.IsInPlane(Coordinat3D(j,j,z)))
-          {
-            TRACE("ERROR");
-            TRACE(z);
-            TRACE(i);
-            TRACE(j);
-            TRACE(p.CalcError(Coordinat3D(j,j,z)));
-            TRACE(p.CalcMaxError(Coordinat3D(j,j,z)));
-            TRACE(p);
-
-            TRACE("AGAIN");
-            TRACE(z);
-            TRACE(i);
-            TRACE(j);
-            TRACE(p.CalcError(Coordinat3D(j,j,z)));
-            TRACE(p.CalcMaxError(Coordinat3D(j,j,z)));
-            TRACE(p);
-
           }
           BOOST_CHECK(p.IsInPlane(Coordinat3D(  j,  j,z)));
           BOOST_CHECK(p.IsInPlane(Coordinat3D(  j, -j,z)));
@@ -443,16 +392,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_plane)
 
       for (const double j:series)
       {
-        if (!p.IsInPlane(Coordinat3D(0.0, j, j)))
-        {
-          TRACE(i);
-          TRACE(j);
-          TRACE(p.CalcError(Coordinat3D(0.0, j, j)));
-          TRACE(p.CalcMaxError(Coordinat3D(0.0, j, j)));
-          if (p.CanCalcX()) { TRACE(Container().ToStr(p.GetCoefficientsX())); }
-          if (p.CanCalcY()) { TRACE(Container().ToStr(p.GetCoefficientsY())); }
-          if (p.CanCalcZ()) { TRACE(Container().ToStr(p.GetCoefficientsZ())); }
-        }
         BOOST_CHECK(p.IsInPlane(Coordinat3D(0.0, j, j)));
         BOOST_CHECK(p.IsInPlane(Coordinat3D(0.0, j,-j)));
         BOOST_CHECK(p.IsInPlane(Coordinat3D(0.0,-j, j)));
@@ -524,16 +463,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_plane)
 
       for (const double j:series)
       {
-        if (!p.IsInPlane(Coordinat3D(j,0.0, j)))
-        {
-          TRACE(i);
-          TRACE(j);
-          TRACE(p.CalcError(Coordinat3D(j,0.0, j)));
-          TRACE(p.CalcMaxError(Coordinat3D(j,0.0,j)));
-          if (p.CanCalcX()) { TRACE(Container().ToStr(p.GetCoefficientsX())); }
-          if (p.CanCalcY()) { TRACE(Container().ToStr(p.GetCoefficientsY())); }
-          if (p.CanCalcZ()) { TRACE(Container().ToStr(p.GetCoefficientsZ())); }
-        }
         BOOST_CHECK(p.IsInPlane(Coordinat3D( j,0.0, j)));
         BOOST_CHECK(p.IsInPlane(Coordinat3D( j,0.0,-j)));
         BOOST_CHECK(p.IsInPlane(Coordinat3D(-j,0.0, j)));
@@ -577,21 +506,10 @@ BOOST_AUTO_TEST_CASE(test_ribi_plane)
 
       if (slope_less < slope) //Not always true, when slope is very small
       {
-        if (p.IsInPlane(Coordinat3D(1.0, 1.0,slope_less)))
-        {
-          TRACE("ERROR");
-          TRACE(p.CalcError(Coordinat3D(1.0, 1.0,slope_less)));
-          TRACE(p.CalcMaxError(Coordinat3D(1.0, 1.0,slope_less)));
-        }
         BOOST_CHECK(!p.IsInPlane(Coordinat3D( 1.0, 1.0,slope_less)));
       }
       if (slope_more > slope) //Not always true, when slope is very big
       {
-        if (p.IsInPlane(Coordinat3D( 1.0, 1.0,slope_more)))
-        {
-          TRACE("ERROR");
-          TRACE(p.CalcError(Coordinat3D( 1.0, 1.0,slope_more)));
-        }
         BOOST_CHECK(!p.IsInPlane(Coordinat3D( 1.0, 1.0,slope_more)));
       }
     }
@@ -680,7 +598,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_plane)
     }
     catch (std::exception&)
     {
-      TRACE("ERROR");
       std::stringstream s;
       s
         << std::setprecision(99)
@@ -689,8 +606,7 @@ BOOST_AUTO_TEST_CASE(test_ribi_plane)
         << Container().ToStr(p.GetCoefficientsY()) << '\n'
         << Container().ToStr(p.GetCoefficientsZ()) << '\n'
       ;
-      TRACE(s.str());
-      TRACE("BREAK");
+      std::cerr << s.str() << '\n';
     }
     BOOST_CHECK(p.IsInPlane(p4));
   }
@@ -718,15 +634,6 @@ BOOST_AUTO_TEST_CASE(test_ribi_plane)
     const Coordinat3D p3(x3,y3,z3);
     const Coordinat3D p4(x4,y4,z4);
     const Plane p(p1,p2,p3);
-
-    if (!p.IsInPlane(p4))
-    {
-      TRACE("ERROR");
-      TRACE(p.CalcError(p4));
-      TRACE(p.CalcMaxError(p4));
-
-      TRACE("BREAK");
-    }
 
     BOOST_CHECK(p.IsInPlane(p4));
   }

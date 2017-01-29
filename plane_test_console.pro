@@ -1,4 +1,5 @@
-#include(../RibiClasses/CppContainer/CppGeometry.pri)
+include(../RibiClasses/CppContainer/CppContainer.pri)
+include(../RibiClasses/CppFuzzy_equal_to/CppFuzzy_equal_to.pri)
 include(../RibiClasses/CppGeometry/CppGeometry.pri)
 include(../RibiClasses/CppRibiRegex/CppRibiRegex.pri)
 

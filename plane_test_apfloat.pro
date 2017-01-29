@@ -3,8 +3,8 @@ include(../RibiLibraries/BoostAll.pri)
 
 include(plane.pri)
 include(plane_apfloat.pri)
+include(../RibiClasses/CppGeometry/CppGeometry.pri)
 include(../RibiClasses/CppRibiRegex/CppRibiRegex.pri)
-include(../RibiClasses/CppRibiRegex/CppRibiRegexTest.pri)
 
 #
 SOURCES += main_test_console.cpp
@@ -17,7 +17,8 @@ CONFIG += c++14
 QMAKE_CXXFLAGS += -std=c++14
 
 # High warning levels
-QMAKE_CXXFLAGS += -Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic -Werror
+# -Wshadow does not go with apfloat
+QMAKE_CXXFLAGS += -Wall -Wextra -Wnon-virtual-dtor -pedantic -Werror
 
 
 CONFIG(release, debug|release) {

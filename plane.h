@@ -32,7 +32,7 @@ struct PlaneZ;
 //    z = -A/C.x - B/C.y + D/C
 struct Plane
 {
-  typedef apfloat Double;
+  typedef double Double;
   typedef boost::geometry::model::d2::point_xy<Double> Coordinat2D;
   typedef boost::geometry::model::point<Double,3,boost::geometry::cs::cartesian> Coordinat3D;
   typedef std::vector<Coordinat2D> Coordinats2D;

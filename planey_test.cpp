@@ -3,7 +3,6 @@
 
 #include "geometry.h"
 #include "planez.h"
-#include "trace.h"
 
 BOOST_AUTO_TEST_CASE(ribi_planey_test)
 {
@@ -16,13 +15,13 @@ BOOST_AUTO_TEST_CASE(ribi_planey_test)
 
 
   const bool verbose{false};
-  if (verbose) TRACE("Default construction");
+  //if (verbose) TRACE("Default construction");
   {
     const PlaneY p;
     BOOST_CHECK(!p.ToFunction().empty());
     BOOST_CHECK(!p.GetCoefficients().empty());
   }
-  if (verbose) TRACE("GetProjection, for plane Y = 0.0, points on plane");
+  //if (verbose) TRACE("GetProjection, for plane Y = 0.0, points on plane");
   {
     /*
 
@@ -110,7 +109,7 @@ BOOST_AUTO_TEST_CASE(ribi_planey_test)
     BOOST_CHECK(abs(d - d_p3_expected) < 0.001);
   }
   */
-  if (verbose) TRACE("CalcPlaneY");
+  //if (verbose) TRACE("CalcPlaneY");
   /*
   {
     //CalcPlaneY return the coefficients in the following form:
@@ -157,7 +156,7 @@ BOOST_AUTO_TEST_CASE(ribi_planey_test)
     TRACE(p.ToFunction());
   }
   */
-  if (verbose) TRACE("CalcY, diagonal plane");
+  //if (verbose) TRACE("CalcY, diagonal plane");
   {
 
 
@@ -169,7 +168,7 @@ BOOST_AUTO_TEST_CASE(ribi_planey_test)
     BOOST_CHECK(std::abs(p.CalcY(2.0, 8.0)- 5.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
     BOOST_CHECK(std::abs(p.CalcY(3.0,11.0)- 7.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
   }
-  if (verbose) TRACE("CalcY, vertical plane Y = 3.0");
+  //if (verbose) TRACE("CalcY, vertical plane Y = 3.0");
   /*
 
     |####/
@@ -195,7 +194,7 @@ BOOST_AUTO_TEST_CASE(ribi_planey_test)
     BOOST_CHECK(std::abs(p.CalcY(7.0,9.0)-3.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
   }
 
-  if (verbose) TRACE("IsInPlane, Y = 1, zooming to smallest three points to determine a plane, point above origin");
+  //if (verbose) TRACE("IsInPlane, Y = 1, zooming to smallest three points to determine a plane, point above origin");
   {
     for (double i = 1.0;
       i > 1.0e-8; //i > 0.0;
@@ -206,33 +205,12 @@ BOOST_AUTO_TEST_CASE(ribi_planey_test)
       const Coordinat3D p2(  i,1.0,0.0);
       const Coordinat3D p3(0.0,1.0,  i);
       const PlaneY p(p1,p2,p3);
-      if (verbose)
-      {
-        TRACE("----------------------------");
-        TRACE(i);
-        TRACE(p.CalcMaxError(p1));
-        TRACE(p.CalcError(p1));
-        TRACE(p.CalcMaxError(p2));
-        TRACE(p.CalcError(p2));
-        TRACE(p.CalcMaxError(p3));
-        TRACE(p.CalcError(p3));
-        TRACE(p.GetFunctionA());
-        TRACE(p.GetFunctionB());
-        TRACE(p.GetFunctionC());
-        TRACE(p.GetCoefficients()[0]);
-        TRACE(p.GetCoefficients()[1]);
-        TRACE(p.GetCoefficients()[2]);
-        TRACE(p.GetCoefficients()[3]);
-        TRACE(std::numeric_limits<double>::epsilon());
-        TRACE(std::sqrt(std::numeric_limits<double>::epsilon()));
-        TRACE(std::numeric_limits<double>::denorm_min());
-      }
       BOOST_CHECK(p.IsInPlane(p1));
       BOOST_CHECK(p.IsInPlane(p2));
       BOOST_CHECK(p.IsInPlane(p3));
     }
   }
-  if (verbose) TRACE("IsPlane");
+  //if (verbose) TRACE("IsPlane");
   {
     const Coordinat3D p1(-3.64472,-0.25,0.0);
     const Coordinat3D p2(-4.52988,-0.25,0.0);
@@ -246,7 +224,7 @@ BOOST_AUTO_TEST_CASE(ribi_planey_test)
     const Coordinats3D v{p1,p2,p3,p4};
     BOOST_CHECK(Geometry().IsPlane(v));
   }
-  if (verbose) TRACE("ToFunction, 3 points and 4 points");
+  //if (verbose) TRACE("ToFunction, 3 points and 4 points");
   {
     std::function<double(double,double)> f {
       [](const double x, const double z)
@@ -295,7 +273,7 @@ BOOST_AUTO_TEST_CASE(ribi_planey_test)
   }
 
 
-  if (verbose) TRACE("GetProjection, for plane Y = 0.0, points not on plane");
+  //if (verbose) TRACE("GetProjection, for plane Y = 0.0, points not on plane");
   {
     /*
 

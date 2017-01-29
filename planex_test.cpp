@@ -29,7 +29,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "container.h"
 #include "geometry.h"
 #include "planez.h"
-#include "trace.h"
 #pragma GCC diagnostic pop
 
 BOOST_AUTO_TEST_CASE(ribi_planex_test)
@@ -42,7 +41,7 @@ BOOST_AUTO_TEST_CASE(ribi_planex_test)
   //using Geometry = ::ribi::Geometry;
 
   const bool verbose{false};
-  if (verbose) TRACE("Default construction");
+  //if (verbose) TRACE("Default construction");
   {
     const PlaneX p;
     BOOST_CHECK(!p.ToFunction().empty());
@@ -150,7 +149,7 @@ BOOST_AUTO_TEST_CASE(ribi_planex_test)
     TRACE(p.ToFunction());
   }
   */
-  if (verbose) TRACE("CalcX, diagonal plane");
+  //if (verbose) TRACE("CalcX, diagonal plane");
   {
 
 
@@ -162,7 +161,7 @@ BOOST_AUTO_TEST_CASE(ribi_planex_test)
     BOOST_CHECK(std::abs(p.CalcX(5.0, 8.0)- 2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
     BOOST_CHECK(std::abs(p.CalcX(7.0,11.0)-3.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
   }
-  if (verbose) TRACE("CalcX, vertical plane X = 2.0");
+  //if (verbose) TRACE("CalcX, vertical plane X = 2.0");
   /*
 
     |####/
@@ -187,7 +186,7 @@ BOOST_AUTO_TEST_CASE(ribi_planex_test)
     BOOST_CHECK(std::abs(p.CalcX(3.0,5.0)-2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
     BOOST_CHECK(std::abs(p.CalcX(7.0,9.0)-2.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
   }
-  if (verbose) TRACE("ToFunction, 3 points and 4 points");
+  //if (verbose) TRACE("ToFunction, 3 points and 4 points");
   {
     std::function<double(double,double)> f {
       [](const double y, const double z)
@@ -235,7 +234,7 @@ BOOST_AUTO_TEST_CASE(ribi_planex_test)
     BOOST_CHECK(a.ToFunction() == PlaneX(p4,p3,p2).ToFunction());
   }
 
-  if (verbose) TRACE("IsInPlane, X = 1, zooming to smallest three points to determine a plane, point above origin");
+  //if (verbose) TRACE("IsInPlane, X = 1, zooming to smallest three points to determine a plane, point above origin");
   {
     for (double i = 1.0; i > 1.0e-8; i/=10.0)
     {
@@ -243,34 +242,13 @@ BOOST_AUTO_TEST_CASE(ribi_planex_test)
       const Coordinat3D p2(1.0,  i,0.0);
       const Coordinat3D p3(1.0,0.0,  i);
       const PlaneX p(p1,p2,p3);
-      if (verbose)
-      {
-        TRACE("----------------------------");
-        TRACE(i);
-        TRACE(p.CalcMaxError(p1));
-        TRACE(p.CalcError(p1));
-        TRACE(p.CalcMaxError(p2));
-        TRACE(p.CalcError(p2));
-        TRACE(p.CalcMaxError(p3));
-        TRACE(p.CalcError(p3));
-        TRACE(p.GetFunctionA());
-        TRACE(p.GetFunctionB());
-        TRACE(p.GetFunctionC());
-        TRACE(p.GetCoefficients()[0]);
-        TRACE(p.GetCoefficients()[1]);
-        TRACE(p.GetCoefficients()[2]);
-        TRACE(p.GetCoefficients()[3]);
-        TRACE(std::numeric_limits<double>::epsilon());
-        TRACE(std::sqrt(std::numeric_limits<double>::epsilon()));
-        TRACE(std::numeric_limits<double>::denorm_min());
-      }
       BOOST_CHECK(p.IsInPlane(p1));
       BOOST_CHECK(p.IsInPlane(p2));
       BOOST_CHECK(p.IsInPlane(p3));
     }
   }
 
-  if (verbose) TRACE("IsInPlane, for bug #228");
+  //if (verbose) TRACE("IsInPlane, for bug #228");
   {
     //Values copied literally, so no .0 on purpose
     const Coordinat3D p1(-5,-5,0);
@@ -278,31 +256,12 @@ BOOST_AUTO_TEST_CASE(ribi_planex_test)
     const Coordinat3D p3(-5,-5,10);
     const Coordinat3D p4(-5,-0.999999999999999880,10);
     const PlaneX p(p1,p2,p3);
-    if (verbose)
-    {
-      TRACE("----------------------------");
-      TRACE(p.CalcMaxError(p1));
-      TRACE(p.CalcError(p1));
-      TRACE(p.CalcMaxError(p2));
-      TRACE(p.CalcError(p2));
-      TRACE(p.CalcMaxError(p3));
-      TRACE(p.CalcError(p3));
-      TRACE(p.CalcMaxError(p4));
-      TRACE(p.CalcError(p4));
-      TRACE(p.GetFunctionA());
-      TRACE(p.GetFunctionB());
-      TRACE(p.GetFunctionC());
-      TRACE(p.GetCoefficients()[0]);
-      TRACE(p.GetCoefficients()[1]);
-      TRACE(p.GetCoefficients()[2]);
-      TRACE(p.GetCoefficients()[3]);
-    }
     BOOST_CHECK(p.IsInPlane(p1));
     BOOST_CHECK(p.IsInPlane(p2));
     BOOST_CHECK(p.IsInPlane(p3));
     BOOST_CHECK(p.IsInPlane(p4));
   }
-  if (verbose) TRACE("GetProjection");
+  //if (verbose) TRACE("GetProjection");
   {
     /*
 
@@ -337,7 +296,7 @@ BOOST_AUTO_TEST_CASE(ribi_planex_test)
     BOOST_CHECK(abs(get<1>(v[2]) - 0.0 ) < 0.001); //no std:: , as apfloat puts abs in the global namespace
 
   }
-  if (verbose) TRACE("GetProjection, for X = 2 plane");
+  //if (verbose) TRACE("GetProjection, for X = 2 plane");
   {
     /*
 

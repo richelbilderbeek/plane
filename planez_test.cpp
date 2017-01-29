@@ -3,7 +3,6 @@
 #include <boost/test/unit_test.hpp>
 #include "container.h"
 #include "geometry.h"
-#include "trace.h"
 
 BOOST_AUTO_TEST_CASE(ribi_planez_test)
 {
@@ -15,14 +14,14 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
   const bool show_warning{false};
   const auto series = ::ribi::PlaneZ::GetTestSeries();
 
-  if (verbose) { TRACE("Default construction"); }
+  //if (verbose) { TRACE("Default construction"); }
   {
     const PlaneZ p;
     BOOST_CHECK(!p.ToFunction().empty());
     BOOST_CHECK(!p.GetCoefficients().empty());
   }
 
-  if (verbose) TRACE("PlaneZ, Z = 5");
+  //if (verbose) TRACE("PlaneZ, Z = 5");
   {
     const Coordinat3D p1( 2.0, 3.0,5.0);
     const Coordinat3D p2( 7.0,11.0,5.0);
@@ -40,7 +39,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
   }
 
   //IsInPlane for Z=0 plane
-  if (verbose) TRACE("PlaneZ, preparation for Plane::CanCalcZ and Plane::IsInPlane, Z = 0 plane, from 1.0 coordinat");
+  //if (verbose) TRACE("PlaneZ, preparation for Plane::CanCalcZ and Plane::IsInPlane, Z = 0 plane, from 1.0 coordinat");
   {
     const Coordinat3D p1(0.0,0.0,0.0);
     const Coordinat3D p2(0.0,1.0,0.0);
@@ -52,7 +51,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
     BOOST_CHECK( p.IsInPlane(Coordinat3D(-1.0, 1.0,0.0)));
     BOOST_CHECK( p.IsInPlane(Coordinat3D( 1.0, 1.0,0.0)));
   }
-  if (verbose) TRACE("PlaneZ, preparation for Plane::CanCalcZ and Plane::IsInPlane, Z = 0 plane, from smallest possible coordinat");
+  //if (verbose) TRACE("PlaneZ, preparation for Plane::CanCalcZ and Plane::IsInPlane, Z = 0 plane, from smallest possible coordinat");
   {
     const double i = std::numeric_limits<double>::denorm_min();
     BOOST_CHECK(i > 0.0);
@@ -67,7 +66,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
     BOOST_CHECK( p.IsInPlane(Coordinat3D( 1.0, 1.0,0.0)));
 
   }
-  if (verbose) TRACE("PlaneZ, preparation for Plane::CanCalcZ and Plane::IsInPlane, Z = 0 plane, from biggest possible coordinat");
+  //if (verbose) TRACE("PlaneZ, preparation for Plane::CanCalcZ and Plane::IsInPlane, Z = 0 plane, from biggest possible coordinat");
   {
     const double i = std::numeric_limits<double>::max();
     BOOST_CHECK(i > 0.0);
@@ -81,7 +80,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
     BOOST_CHECK( p.IsInPlane(Coordinat3D(-1.0, 1.0,0.0)));
     BOOST_CHECK( p.IsInPlane(Coordinat3D( 1.0, 1.0,0.0)));
   }
-  if (verbose) TRACE("PlaneZ, preparation for Plane::CanCalcZ and Plane::IsInPlane, Z = 0 plane, zooming in");
+  //if (verbose) TRACE("PlaneZ, preparation for Plane::CanCalcZ and Plane::IsInPlane, Z = 0 plane, zooming in");
   {
     for (const double i:series)
     {
@@ -101,7 +100,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
       }
     }
   }
-  if (verbose) TRACE("IsInPlane, Z = 1, zooming to smallest three points to determine a plane, point above origin");
+  //if (verbose) TRACE("IsInPlane, Z = 1, zooming to smallest three points to determine a plane, point above origin");
   {
     for (double i = 1.0;
       i > 1.0e-8; //i > 0.0;
@@ -112,29 +111,12 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
       const Coordinat3D p2(0.0,  i,1.0);
       const Coordinat3D p3(  i,0.0,1.0);
       const PlaneZ p(p1,p2,p3);
-      if (verbose)
-      {
-        TRACE("----------------------------");
-        TRACE(i);
-        TRACE(p.CalcMaxError(p1));
-        TRACE(p.CalcError(p1));
-        TRACE(p.GetFunctionA());
-        TRACE(p.GetFunctionB());
-        TRACE(p.GetFunctionC());
-        TRACE(p.GetCoefficients()[0]);
-        TRACE(p.GetCoefficients()[1]);
-        TRACE(p.GetCoefficients()[2]);
-        TRACE(p.GetCoefficients()[3]);
-        TRACE(std::numeric_limits<double>::epsilon());
-        TRACE(std::sqrt(std::numeric_limits<double>::epsilon()));
-        TRACE(std::numeric_limits<double>::denorm_min());
-      }
       BOOST_CHECK(p.IsInPlane(p1));
       BOOST_CHECK(p.IsInPlane(p2));
       BOOST_CHECK(p.IsInPlane(p3));
     }
   }
-  if (verbose) TRACE("IsInPlane, Z = 1, zooming to smallest three points to determine a plane, point above origin");
+  //if (verbose) TRACE("IsInPlane, Z = 1, zooming to smallest three points to determine a plane, point above origin");
   {
     const double min = 1.0e-8;
     const double max = 1.0e+8;
@@ -161,24 +143,6 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
             continue;
           }
           if (!show_warning) continue;
-
-          TRACE(s.str());
-          BOOST_CHECK(p.IsInPlane(p1) == p.IsInPlane(p2) && p.IsInPlane(p2) == p.IsInPlane(p3));
-          TRACE(p);
-          TRACE(z);
-          TRACE(i);
-          TRACE(p.CalcMaxError(p1));
-          TRACE(p.CalcError(p1));
-          TRACE(p.CalcMaxError(p1) / p.CalcError(p1));
-          TRACE(p.CalcMaxError(p2));
-          TRACE(p.CalcError(p2));
-          TRACE(p.CalcMaxError(p2) / p.CalcError(p2));
-          TRACE(p.CalcMaxError(p3));
-          TRACE(p.CalcError(p3));
-          TRACE(p.CalcMaxError(p3) / p.CalcError(p3));
-          TRACE(p.GetFunctionA());
-          TRACE(p.GetFunctionB());
-          TRACE(p.GetFunctionC());
         }
         BOOST_CHECK(p.IsInPlane(p1));
         BOOST_CHECK(p.IsInPlane(p2));
@@ -186,7 +150,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
       }
     }
   }
-  if (verbose) TRACE("CanCalcZ, Z = 1.0 plane, zooming in");
+  //if (verbose) TRACE("CanCalcZ, Z = 1.0 plane, zooming in");
   {
     for (const double i:series)
     {
@@ -198,12 +162,6 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
       const PlaneZ p(p1,p2,p3);
       for (const double j:series)
       {
-        if (!p.IsInPlane(Coordinat3D(0.0,0.0,1.0)))
-        {
-          TRACE(i);
-          TRACE(p.CalcMaxError(Coordinat3D(0.0,0.0,1.0)));
-          TRACE(p.CalcError(Coordinat3D(0.0,0.0,1.0)));
-        }
         BOOST_CHECK(p.IsInPlane(Coordinat3D(0.0,0.0,1.0)));
         BOOST_CHECK(p.IsInPlane(Coordinat3D(  j,  j,1.0)));
         BOOST_CHECK(p.IsInPlane(Coordinat3D(  j, -j,1.0)));
@@ -227,7 +185,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
 
 
   */
-  if (verbose) TRACE("PlaneZ, preparation for Plane::CanCalcZ and Plane::IsInPlane, Z = z plane, zooming in");
+  //if (verbose) TRACE("PlaneZ, preparation for Plane::CanCalcZ and Plane::IsInPlane, Z = z plane, zooming in");
   {
     //The height of the plane
     for (const double z:series)
@@ -256,28 +214,9 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
                 << Geometry().ToStr(p2) << " and "
                 << Geometry().ToStr(p3) << "."
               ;
-              TRACE(s.str());
+              std::cerr << s.str() << '\n';
             }
             continue;
-          }
-          if (!p.IsInPlane(Coordinat3D(j,j,z)))
-          {
-            TRACE("ERROR");
-            TRACE(z);
-            TRACE(i);
-            TRACE(j);
-            TRACE(p.CalcError(Coordinat3D(j,j,z)));
-            TRACE(p.CalcMaxError(Coordinat3D(j,j,z)));
-            TRACE(p);
-
-            TRACE("AGAIN");
-            TRACE(z);
-            TRACE(i);
-            TRACE(j);
-            TRACE(p.CalcError(Coordinat3D(j,j,z)));
-            TRACE(p.CalcMaxError(Coordinat3D(j,j,z)));
-            TRACE(p);
-
           }
           BOOST_CHECK(p.IsInPlane(Coordinat3D(  j,  j,z)));
           BOOST_CHECK(p.IsInPlane(Coordinat3D(  j, -j,z)));
@@ -288,7 +227,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
     }
   }
 
-  if (verbose) { TRACE("Check formulas"); }
+  //if (verbose) { TRACE("Check formulas"); }
   {
     const double p1_x{ 1.0};
     const double p1_y{ 2.0};
@@ -350,7 +289,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
     BOOST_CHECK(std::abs(d - d_p2_expected) < 0.001);
     BOOST_CHECK(std::abs(d - d_p3_expected) < 0.001);
   }
-  if (verbose) { TRACE("CalcPlaneZ"); }
+  //if (verbose) { TRACE("CalcPlaneZ"); }
   {
     //CalcPlaneZ return the coefficients in the following form:
     // A.x + B.y + C.z = D
@@ -392,7 +331,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
     BOOST_CHECK(std::abs(d - d_p2_expected) < 0.001);
     BOOST_CHECK(std::abs(d - d_p3_expected) < 0.001);
   }
-  if (verbose) { TRACE("CalcZ, diagonal plane"); }
+  //if (verbose) { TRACE("CalcZ, diagonal plane"); }
   {
     const Coordinat3D p1(1.0,2.0,3.0);
     const Coordinat3D p2(2.0,5.0,8.0);
@@ -402,7 +341,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
     BOOST_CHECK(abs(p.CalcZ(2.0,5.0)- 8.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
     BOOST_CHECK(abs(p.CalcZ(3.0,7.0)-11.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
   }
-  if (verbose) { TRACE("CalcZ, horizontal plane Z = 5.0"); }
+  //if (verbose) { TRACE("CalcZ, horizontal plane Z = 5.0"); }
   /*
 
     |    /
@@ -427,7 +366,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
     BOOST_CHECK(std::abs(p.CalcZ(3.0,5.0)-5.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
     BOOST_CHECK(std::abs(p.CalcZ(7.0,9.0)-5.0) < 0.001); //no std:: , as apfloat puts abs in the global namespace
   }
-  if (verbose) { TRACE("ToFunction, 3 points and 4 points"); }
+  //if (verbose) { TRACE("ToFunction, 3 points and 4 points"); }
   {
     std::function<double(double,double)> f {
       [](const double x, const double y)
@@ -476,7 +415,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
     BOOST_CHECK(a.ToFunction() == PlaneZ(p4,p3,p2).ToFunction());
 
   }
-  if (verbose) { TRACE("GetProjection, for Z = 0 plane"); }
+  //if (verbose) { TRACE("GetProjection, for Z = 0 plane"); }
   {
     /*
 
@@ -510,7 +449,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test)
     BOOST_CHECK(abs(get<1>(v[2]) - 1.0 ) < 0.001); //no std:: , as apfloat puts abs in the global namespace
 
   }
-  if (verbose) { TRACE("CalcProjection, for Z = 2 plane"); }
+  //if (verbose) { TRACE("CalcProjection, for Z = 2 plane"); }
   {
     /*
 

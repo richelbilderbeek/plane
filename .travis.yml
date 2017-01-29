@@ -33,8 +33,8 @@ script:
   - qmake plane_test_console.pro
   - make debug
   - ./plane_test_console
-  - qmake plane_test_apfloat.pro
-  - make debug
+  #- qmake plane_test_apfloat.pro
+  #- make debug
   # Codecov
   - ./get_code_cov
   - codecov

@@ -2,6 +2,7 @@
 #define RIBI_PLANE_H
 
 #include <vector>
+#include "apfloat.h"
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
@@ -31,9 +32,9 @@ struct PlaneZ;
 //    z = -A/C.x - B/C.y + D/C
 struct Plane
 {
-  typedef double Double;
-  typedef boost::geometry::model::d2::point_xy<double> Coordinat2D;
-  typedef boost::geometry::model::point<double,3,boost::geometry::cs::cartesian> Coordinat3D;
+  typedef apfloat Double;
+  typedef boost::geometry::model::d2::point_xy<Double> Coordinat2D;
+  typedef boost::geometry::model::point<Double,3,boost::geometry::cs::cartesian> Coordinat3D;
   typedef std::vector<Coordinat2D> Coordinats2D;
   typedef std::vector<Coordinat3D> Coordinats3D;
   typedef std::vector<Double> Doubles;

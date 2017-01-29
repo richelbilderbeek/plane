@@ -3,7 +3,9 @@ include(../RibiLibraries/BoostAll.pri)
 
 include(plane.pri)
 include(plane_apfloat.pri)
+include(../RibiClasses/CppContainer/CppContainer.pri)
 include(../RibiClasses/CppGeometry/CppGeometry.pri)
+include(../RibiClasses/CppGeometry/CppGeometryApfloat.pri)
 include(../RibiClasses/CppRibiRegex/CppRibiRegex.pri)
 
 #

@@ -28,7 +28,7 @@ ribi::PlaneX::PlaneX(
   const Coordinat3D& p1,
   const Coordinat3D& p2,
   const Coordinat3D& p3
-) : m_plane_z{Create(p1,p2,p3)}
+) : m_plane_z{CreateForPlaneX(p1,p2,p3)}
 {
 
 }
@@ -44,7 +44,7 @@ double ribi::PlaneX::CalcError(const Coordinat3D& coordinat) const noexcept
   return error;
 }
 
-ribi::PlaneX::Double ribi::PlaneX::CalcMinErrorPerCinPlaneX() noexcept
+ribi::PlaneX::Double ribi::CalcMinErrorPerCinPlaneX() noexcept
 {
   //min_error_per_c will be about 0.000000001
   //stub_value increases this jut a little, by a 0.000001%
@@ -150,10 +150,10 @@ ribi::PlaneX::Double ribi::PlaneX::CalcX(const Double& y, const Double& z) const
   }
 }
 
-std::unique_ptr<ribi::PlaneZ> ribi::PlaneX::Create(
-  const Coordinat3D& p1,
-  const Coordinat3D& p2,
-  const Coordinat3D& p3
+std::unique_ptr<ribi::PlaneZ> ribi::CreateForPlaneX(
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p1,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p2,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p3
 )
 {
   std::unique_ptr<PlaneZ> p(

@@ -26,7 +26,7 @@ ribi::PlaneY::PlaneY(
     const Coordinat3D& p2,
     const Coordinat3D& p3
 )
-  : m_plane_z{Create(p1,p2,p3)}
+  : m_plane_z{CreateForPlaneY(p1,p2,p3)}
 {
 
 }
@@ -145,7 +145,7 @@ ribi::PlaneY::Double ribi::PlaneY::CalcY(const Double& x, const Double& z) const
   }
 }
 
-std::unique_ptr<ribi::PlaneZ> ribi::Create(
+std::unique_ptr<ribi::PlaneZ> ribi::CreateForPlaneY(
   const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p1,
   const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p2,
   const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p3

@@ -7,7 +7,6 @@
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include <boost/geometry/geometries/point_xy.hpp>
-#include <boost/make_shared.hpp>
 //#include "planez.h"
 #pragma GCC diagnostic pop
 
@@ -104,7 +103,7 @@ struct PlaneX
 double CalcMinErrorPerCinPlaneX() noexcept;
 
 ///Will throw if plane cannot be created
-std::unique_ptr<PlaneZ> Create(
+std::unique_ptr<PlaneZ> CreateForPlaneX(
   const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p1,
   const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p2,
   const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p3
@@ -115,7 +114,9 @@ std::vector<double> RotateInPlaneX(const std::vector<double>& coefficients) noex
 
 ///Rotates the X,Y and Z value of a Coordinat
 boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>
-RotateInPlaneX(const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& point) noexcept;
+RotateInPlaneX(
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& point
+) noexcept;
 
 std::ostream& operator<<(std::ostream& os,const PlaneX& planex);
 

@@ -4,7 +4,6 @@
 #include <boost/test/unit_test.hpp>
 
 #include <boost/limits.hpp>
-#include <boost/make_shared.hpp>
 
 #include "container.h"
 #include "geometry.h"
@@ -18,7 +17,7 @@ using Coordinat3D = ::ribi::Plane::Coordinat3D;
 BOOST_AUTO_TEST_CASE(test_ribi_plane_construct_simple)
 {
   using Plane = ribi::Plane;
-  const boost::shared_ptr<Plane> plane{
+  const std::unique_ptr<Plane> plane{
     new Plane(
       Plane::Coordinat3D(0.0,0.0,0.0),
       Plane::Coordinat3D(0.0,1.0,0.0),

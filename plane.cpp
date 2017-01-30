@@ -24,13 +24,13 @@ ribi::Plane::Plane(
   m_plane_z(CreatePlaneZ(p1,p2,p3)),
   m_points( {p1,p2,p3} )
 {
-  if (m_plane_z)
+  if (CanCalcZ())
   {
     try
     {
-      m_plane_z->GetFunctionA();
-      m_plane_z->GetFunctionB();
-      m_plane_z->GetFunctionC();
+      m_plane_z.front().GetFunctionA();
+      m_plane_z.front().GetFunctionB();
+      m_plane_z.front().GetFunctionC();
     }
     catch (...)
     {
@@ -80,15 +80,15 @@ ribi::Plane::Double ribi::Plane::CalcMaxError(const Coordinat3D& coordinat) cons
   double max_error{std::numeric_limits<double>::denorm_min()};
   if (CanCalcX())
   {
-    max_error = std::max(max_error,m_plane_x->CalcMaxError(coordinat));
+    max_error = std::max(max_error,m_plane_x.front().CalcMaxError(coordinat));
   }
   if (CanCalcY())
   {
-    max_error = std::max(max_error,m_plane_y->CalcMaxError(coordinat));
+    max_error = std::max(max_error,m_plane_y.front().CalcMaxError(coordinat));
   }
   if (CanCalcZ())
   {
-    max_error = std::max(max_error,m_plane_z->CalcMaxError(coordinat));
+    max_error = std::max(max_error,m_plane_z.front().CalcMaxError(coordinat));
   }
   return max_error;
 }
@@ -98,17 +98,17 @@ ribi::Plane::Coordinats2D ribi::Plane::CalcProjection(
   const Coordinats3D& points
 ) const
 {
-  if (!m_plane_x && !m_plane_y && !m_plane_z)
+  if (!CanCalcX() && !CanCalcY() && !CanCalcZ())
   {
     throw std::logic_error("Plane::CalcProjection: cannot express any plane");
   }
-  try { if (m_plane_x) { return m_plane_x->CalcProjection(points); }}
+  try { if (CanCalcX()) { return m_plane_x.front().CalcProjection(points); }}
   catch (std::logic_error&) { /* OK, try next plane */ }
 
-  try { if (m_plane_y) { return m_plane_y->CalcProjection(points); }}
+  try { if (CanCalcY()) { return m_plane_y.front().CalcProjection(points); }}
   catch (std::logic_error&) { /* OK, try next plane */ }
 
-  try { if (m_plane_z) { return m_plane_z->CalcProjection(points); }}
+  try { if (CanCalcZ()) { return m_plane_z.front().CalcProjection(points); }}
   catch (std::logic_error&) { /* OK, try next plane */ }
 
   // TRACE("ERROR");
@@ -131,21 +131,21 @@ ribi::Plane::Coordinats2D ribi::Plane::CalcProjection(
     if (m_plane_x)
     {
       // try { TRACE(*m_plane_x); } catch(std::logic_error&) { TRACE("Failed m_plane_x"); }
-      // try { m_plane_x->CalcProjection(points); } catch (std::logic_error&) { TRACE("Failed m_plane_x->CalcProjection"); }
+      // try { m_plane_x.front().CalcProjection(points); } catch (std::logic_error&) { TRACE("Failed m_plane_x.front().CalcProjection"); }
     }
   }
   {
     if (m_plane_y)
     {
       // try { TRACE(*m_plane_y); } catch(std::logic_error&) { TRACE("Failed m_plane_y"); }
-      // try { m_plane_y->CalcProjection(points); } catch (std::logic_error&) { TRACE("Failed m_plane_y->CalcProjection"); }
+      // try { m_plane_y.front().CalcProjection(points); } catch (std::logic_error&) { TRACE("Failed m_plane_y.front().CalcProjection"); }
     }
   }
   {
     if (m_plane_z)
     {
       // try { TRACE(*m_plane_z); } catch(std::logic_error&) { TRACE("Failed m_plane_z"); }
-      // try { m_plane_z->CalcProjection(points); } catch (std::logic_error&) { TRACE("Failed m_plane_z->CalcProjection"); }
+      // try { m_plane_z.front().CalcProjection(points); } catch (std::logic_error&) { TRACE("Failed m_plane_z.front().CalcProjection"); }
     }
   } */
   /* for (const auto& point: points)
@@ -170,7 +170,7 @@ ribi::Plane::Double ribi::Plane::CalcX(const Double& y, const Double& z) const
   {
     throw std::logic_error("Plane::CalcX: cannot express the plane as 'X = A*Y + B*Z + C'");
   }
-  return m_plane_x->CalcX(y,z);
+  return m_plane_x.front().CalcX(y,z);
 }
 
 ribi::Plane::Double ribi::Plane::CalcY(const ribi::Plane::Double& x, const ribi::Plane::Double& z) const
@@ -179,7 +179,7 @@ ribi::Plane::Double ribi::Plane::CalcY(const ribi::Plane::Double& x, const ribi:
   {
     throw std::logic_error("Plane::CalcY: cannot express the plane as 'Y = A*X + B*Y + C'");
   }
-  return m_plane_y->CalcY(x,z);
+  return m_plane_y.front().CalcY(x,z);
 }
 
 ribi::Plane::Double ribi::Plane::CalcZ(const ribi::Plane::Double& x, const ribi::Plane::Double& y) const
@@ -188,140 +188,103 @@ ribi::Plane::Double ribi::Plane::CalcZ(const ribi::Plane::Double& x, const ribi:
   {
     throw std::logic_error("Plane::CalcZ: cannot express the plane as 'Z = A*X + B*Y + C'");
   }
-  return m_plane_z->CalcZ(x,y);
+  return m_plane_z.front().CalcZ(x,y);
 }
 
 bool ribi::Plane::CanCalcX() const noexcept
 {
-  return m_plane_x.get();
+  return !m_plane_x.empty();
 }
 bool ribi::Plane::CanCalcY() const noexcept
 {
-  return m_plane_y.get();
+  return !m_plane_y.empty();
 }
 
 bool ribi::Plane::CanCalcZ() const noexcept
 {
-  return m_plane_z.get();
+  return !m_plane_z.empty();
 }
 
-boost::shared_ptr<ribi::PlaneX> ribi::Plane::CreatePlaneX(
-  const Coordinat3D& p1,
-  const Coordinat3D& p2,
-  const Coordinat3D& p3
+std::vector<ribi::PlaneX> ribi::CreatePlaneX(
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p1,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p2,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p3
 ) noexcept
 {
-  // const bool verbose{false};
+  std::vector<PlaneX> p;
   try
   {
-    const boost::shared_ptr<PlaneX> p(
-      boost::make_shared<PlaneX>(p1,p2,p3)
-    );
-    assert(p);
-    return p;
+    p.push_back(PlaneX(p1,p2,p3));
   }
-  catch (std::exception& e)
-  {
-    // if (verbose) { /* TRACE(e.what()); */ }
-    return boost::shared_ptr<PlaneX>();
-  }
+  catch (std::exception&) {} //!OCLINT this is ok
+  return p;
 }
 
-boost::shared_ptr<ribi::PlaneY> ribi::Plane::CreatePlaneY(
-  const Coordinat3D& p1,
-  const Coordinat3D& p2,
-  const Coordinat3D& p3
+std::vector<ribi::PlaneY> ribi::CreatePlaneY(
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p1,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p2,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p3
 ) noexcept
 {
+  std::vector<PlaneY> p;
   try
   {
-    const boost::shared_ptr<PlaneY> p
-      = boost::make_shared<PlaneY>(p1,p2,p3);
-    assert(p);
-    return p;
+    p.push_back(PlaneY(p1,p2,p3));
   }
-  catch (std::exception&)
-  {
-    return boost::shared_ptr<PlaneY>();
-  }
+  catch (std::exception&) {} //!OCLINT this is ok
+  return p;
 }
 
-boost::shared_ptr<ribi::PlaneZ> ribi::Plane::CreatePlaneZ(
-  const Coordinat3D& p1,
-  const Coordinat3D& p2,
-  const Coordinat3D& p3
+std::vector<ribi::PlaneZ> ribi::CreatePlaneZ(
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p1,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p2,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p3
 ) noexcept
 {
+  std::vector<PlaneZ> p;
   try
   {
-    const boost::shared_ptr<PlaneZ> p
-      = boost::make_shared<PlaneZ>(p1,p2,p3);
-    assert(p);
-    return p;
+    p.push_back(PlaneZ(p1,p2,p3));
   }
-  catch (std::exception&)
-  {
-    return boost::shared_ptr<PlaneZ>();
-  }
+  catch (std::exception&) {} //!OCLINT this is ok
+  return p;
 }
 
 ribi::Plane::Doubles ribi::Plane::GetCoefficientsX() const
 {
-  if (!m_plane_x)
+  if (!CanCalcX())
   {
     throw std::logic_error("Plane::GetCoefficientsX: cannot express the plane as 'X = A*Y + B*Z + C'");
   }
-  return m_plane_x->GetCoefficients();
+  return m_plane_x.front().GetCoefficients();
 }
 
 ribi::Plane::Doubles ribi::Plane::GetCoefficientsY() const
 {
-  if (!m_plane_y)
+  if (!CanCalcY())
   {
     throw std::logic_error("Plane::GetCoefficientsY: cannot express the plane as 'Y = A*X + B*Z + C'");
   }
-  return m_plane_y->GetCoefficients();
+  return m_plane_y.front().GetCoefficients();
 }
 
 ribi::Plane::Doubles ribi::Plane::GetCoefficientsZ() const
 {
-  if (!m_plane_z)
+  if (!CanCalcZ())
   {
     throw std::logic_error("Plane::GetCoefficientsZ: cannot express the plane as 'Z = A*X + B*Y + C'");
   }
-  return m_plane_z->GetCoefficients();
-}
-
-
-std::string ribi::Plane::GetVersion() noexcept
-{
-  return "1.9";
-}
-
-std::vector<std::string> ribi::Plane::GetVersionHistory() noexcept
-{
-  return {
-    "2014-03-07: version 1.0: initial version",
-    "2014-03-10: version 1.1: allow vertical planes",
-    "2014-03-13: version 1.2: bug fixed",
-    "2014-04-01: version 1.3: use of std::unique_ptr",
-    "2014-06-13: version 1.4: added operator<<, ToStr calls operator<<, shortened time to compile",
-    "2014-06-16: version 1.5: improved detection of planes that can be expressed in less than three dimensions"
-    "2014-07-03: version 1.6: use of apfloat, improved accuracy",
-    "2014-07-10: version 1.7: use of apfloat only",
-    "2014-07-15: version 1.8: multiple bugfixes",
-    "2014-08-02: version 1.9: use of stubs, to speed up testing"
-  };
+  return m_plane_z.front().GetCoefficients();
 }
 
 bool ribi::Plane::IsInPlane(const Coordinat3D& coordinat) const noexcept
 {
-  //return CalcError(coordinat) <= CalcMaxError(coordinat);;
-  assert(m_plane_x || m_plane_y || m_plane_z);
+  //return CalcError(coordinat) <= CalcMaxError(coordinat);
+  assert(CanCalcX() || CanCalcY() || CanCalcZ());
   const bool is_in_plane {
-       (m_plane_x && m_plane_x->IsInPlane(coordinat))
-    || (m_plane_y && m_plane_y->IsInPlane(coordinat))
-    || (m_plane_z && m_plane_z->IsInPlane(coordinat))
+       (CanCalcX() && m_plane_x.front().IsInPlane(coordinat))
+    || (CanCalcY() && m_plane_y.front().IsInPlane(coordinat))
+    || (CanCalcZ() && m_plane_z.front().IsInPlane(coordinat))
   };
   #ifndef NDEBUG
   const bool has_error_below_max = CalcError(coordinat) <= CalcMaxError(coordinat);
@@ -349,9 +312,9 @@ std::ostream& ribi::operator<<(std::ostream& os, const Plane& plane) noexcept
     os << (i != n_points - 1 ? ',' : ')');
   }
   os << ',';
-  if (plane.m_plane_x)
+  if (!plane.m_plane_x.empty())
   {
-    try { os << (*plane.m_plane_x); }
+    try { os << plane.m_plane_x.front(); }
     catch (std::exception&) { os << "divnull"; }
   }
   else
@@ -359,9 +322,9 @@ std::ostream& ribi::operator<<(std::ostream& os, const Plane& plane) noexcept
     os << "null";
   }
   os << ',';
-  if (plane.m_plane_y)
+  if (!plane.m_plane_y.empty())
   {
-    try { os << (*plane.m_plane_y); }
+    try { os << plane.m_plane_y.front(); }
     catch (std::exception&) { os << "divnull"; }
   }
   else
@@ -369,9 +332,9 @@ std::ostream& ribi::operator<<(std::ostream& os, const Plane& plane) noexcept
     os << "null";
   }
   os << ',';
-  if (plane.m_plane_z)
+  if (!plane.m_plane_z.empty())
   {
-    try { os << (*plane.m_plane_z); }
+    try { os << plane.m_plane_z.front(); }
     catch (std::exception&) { os << "divnull"; }
   }
   else

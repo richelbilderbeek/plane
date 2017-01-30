@@ -77,7 +77,7 @@ double ribi::PlaneZ::CalcError(const Coordinat3D& coordinat) const noexcept
   return error;
 }
 
-ribi::PlaneZ::Double ribi::PlaneZ::CalcMinErrorPerC() noexcept
+ribi::PlaneZ::Double ribi::PlaneZ::CalcMinErrorPerCinPlaneZ() noexcept
 {
   //min_error_per_c will be about 0.000000001
   //stub_value increases this jut a little, by a 0.000001%
@@ -145,8 +145,8 @@ ribi::PlaneZ::Double ribi::PlaneZ::CalcMinErrorPerC() noexcept
 
 double ribi::PlaneZ::CalcMaxError(const Coordinat3D& /*coordinat*/) const noexcept
 {
-  assert(CalcMinErrorPerC() > double(0.0));
-  const double max_error{std::abs(CalcMinErrorPerC() * GetFunctionC())};
+  assert(CalcMinErrorPerCinPlaneZ() > double(0.0));
+  const double max_error{std::abs(CalcMinErrorPerCinPlaneZ() * GetFunctionC())};
   assert(max_error >= double(0.0));
   return max_error;
 }

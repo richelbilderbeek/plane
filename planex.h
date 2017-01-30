@@ -95,7 +95,7 @@ struct PlaneX
   private:
 
   ///A PlaneX is actually a PlaneZ used with its coordinats rotated from (X,Y,Z) to (Z,Y,Y)
-  const std::unique_ptr<PlaneZ> m_plane_z;
+  std::unique_ptr<PlaneZ> m_plane_z;
 
   ///Calculates m_min_error per GetFunctionC()
   static Double CalcMinErrorPerC() noexcept;

@@ -9,19 +9,16 @@
 #pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/point_xy.hpp>
-#include <boost/make_shared.hpp>
-#include <boost/shared_ptr.hpp>
 #ifndef _WIN32
 #include <boost/geometry/geometries/polygon.hpp>
 #endif
 
 #pragma GCC diagnostic pop
+#include "planex.h"
+#include "planey.h"
+#include "planez.h"
 
 namespace ribi {
-
-struct PlaneX;
-struct PlaneY;
-struct PlaneZ;
 
 ///Any 3D plane, even a single point
 ///Can be constructed from its equation and at least three 3D points
@@ -94,24 +91,6 @@ struct Plane
   ///Can the Plane be expressed as Z = A*X + B*Y + C ?
   bool CanCalcZ() const noexcept;
 
-  static boost::shared_ptr<PlaneX> CreatePlaneX(
-    const Coordinat3D& p1,
-    const Coordinat3D& p2,
-    const Coordinat3D& p3
-  ) noexcept;
-
-  static boost::shared_ptr<PlaneY> CreatePlaneY(
-    const Coordinat3D& p1,
-    const Coordinat3D& p2,
-    const Coordinat3D& p3
-  ) noexcept;
-
-  static boost::shared_ptr<PlaneZ> CreatePlaneZ(
-    const Coordinat3D& p1,
-    const Coordinat3D& p2,
-    const Coordinat3D& p3
-  ) noexcept;
-
   ///Calculates the error between plane and coordinat
   Double CalcError(const Coordinat3D& coordinat) const noexcept;
 
@@ -127,9 +106,6 @@ struct Plane
   ///If the Plane can be expressed as Z = A*X + B*Y + C, return the coefficients
   Doubles GetCoefficientsZ() const;
 
-  static std::string GetVersion() noexcept;
-  static std::vector<std::string> GetVersionHistory() noexcept;
-
   ///Checks if the coordinat is in the plane
   bool IsInPlane(const Coordinat3D& coordinat) const noexcept;
 
@@ -137,24 +113,51 @@ struct Plane
   private:
 
   ///A non-horizontal plane; a plane that can be expressed as 'X(Y,Z) = A*Y + B*Z + C'
-  const boost::shared_ptr<const PlaneX> m_plane_x;
+  const std::vector<PlaneX> m_plane_x;
 
   ///A non-horizontal plane; a plane that can be expressed as 'Y(X,Z) = A*X + B*Z + C'
-  const boost::shared_ptr<const PlaneY> m_plane_y;
+  const std::vector<PlaneY> m_plane_y;
 
   ///A non-vertical plane; a plane that can be expressed as 'Z(X,Y) = A*X + B*Y + C'
-  const boost::shared_ptr<const PlaneZ> m_plane_z;
+  const std::vector<PlaneZ> m_plane_z;
 
   const Coordinats3D m_points;
-
-  static boost::shared_ptr<PlaneX> CreatePlaneX(const Doubles& coefficients_x) noexcept;
-  static boost::shared_ptr<PlaneY> CreatePlaneY(const Doubles& coefficients_y) noexcept;
-  static boost::shared_ptr<PlaneZ> CreatePlaneZ(const Doubles& coefficients_z) noexcept;
 
   friend std::ostream& operator<<(std::ostream& os, const Plane& plane) noexcept;
 };
 
+///Creates a vector of size one with a PlaneX if it can
+///be constructed from the coefficients. Creates
+///an empty vector otherwise
+std::vector<PlaneX> CreatePlaneX(const std::vector<double>& coefficients_x) noexcept;
+std::vector<PlaneX> CreatePlaneX(
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p1,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p2,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p3
+) noexcept;
+
+///Creates a vector of size one with a PlaneY if it can
+///be constructed from the coefficients. Creates
+///an empty vector otherwise
+std::vector<PlaneY> CreatePlaneY(const std::vector<double>& coefficients_y) noexcept;
+std::vector<PlaneY> CreatePlaneY(
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p1,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p2,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p3
+) noexcept;
+
+///Creates a vector of size one with a PlaneZ if it can
+///be constructed from the coefficients. Creates
+///an empty vector otherwise
+std::vector<PlaneZ> CreatePlaneZ(const std::vector<double>& coefficients_z) noexcept;
+std::vector<PlaneZ> CreatePlaneZ(
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p1,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p2,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p3
+) noexcept;
+
 std::ostream& operator<<(std::ostream& os, const Plane& plane) noexcept;
+
 
 } //~namespace ribi
 

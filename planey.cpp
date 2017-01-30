@@ -42,7 +42,7 @@ double ribi::PlaneY::CalcError(const Coordinat3D& coordinat) const noexcept
   return error;
 }
 
-ribi::PlaneY::Double ribi::PlaneY::CalcMinErrorPerC() noexcept
+ribi::PlaneY::Double ribi::CalcMinErrorPerCinPlaneY() noexcept
 {
   //min_error_per_c will be about 0.000000001
   //stub_value increases this jut a little, by a 0.000001%
@@ -111,8 +111,8 @@ ribi::PlaneY::Double ribi::PlaneY::CalcMinErrorPerC() noexcept
 
 double ribi::PlaneY::CalcMaxError(const Coordinat3D& /*coordinat*/) const noexcept
 {
-  assert(CalcMinErrorPerC() > 0.0);
-  const double max_error{std::abs(CalcMinErrorPerC() * GetFunctionC())};
+  assert(CalcMinErrorPerCinPlaneY() > 0.0);
+  const double max_error{std::abs(CalcMinErrorPerCinPlaneY() * GetFunctionC())};
   assert(max_error >= 0.0);
   return max_error;
 }
@@ -122,7 +122,7 @@ ribi::PlaneY::Coordinats2D ribi::PlaneY::CalcProjection(
 ) const
 {
   auto v(points);
-  for(auto& i: v) { i = Rotate(i); }
+  for(auto& i: v) { i = RotateInPlaneY(i); }
   try
   {
     return m_plane_z->CalcProjection(v);
@@ -145,14 +145,14 @@ ribi::PlaneY::Double ribi::PlaneY::CalcY(const Double& x, const Double& z) const
   }
 }
 
-std::unique_ptr<ribi::PlaneZ> ribi::PlaneY::Create(
-  const Coordinat3D& p1,
-  const Coordinat3D& p2,
-  const Coordinat3D& p3
+std::unique_ptr<ribi::PlaneZ> ribi::Create(
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p1,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p2,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p3
 )
 {
   std::unique_ptr<PlaneZ> p(
-    new PlaneZ(Rotate(p1), Rotate(p2), Rotate(p3))
+    new PlaneZ(RotateInPlaneY(p1), RotateInPlaneY(p2), RotateInPlaneY(p3))
   );
   assert(p);
   return p;
@@ -218,7 +218,8 @@ bool ribi::PlaneY::IsInPlane(const Coordinat3D& coordinat) const noexcept
   }
 }
 
-ribi::PlaneY::Doubles ribi::PlaneY::Rotate(const Doubles& coefficients) noexcept
+std::vector<double> ribi::RotateInPlaneY(
+  const std::vector<double>& coefficients) noexcept
 {
   assert(coefficients.size() == 4);
   return
@@ -230,13 +231,13 @@ ribi::PlaneY::Doubles ribi::PlaneY::Rotate(const Doubles& coefficients) noexcept
   };
 }
 
-ribi::PlaneY::Coordinat3D ribi::PlaneY::Rotate(
-  const Coordinat3D& point
+ribi::PlaneY::Coordinat3D ribi::RotateInPlaneY(
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& point
 ) noexcept
 {
   //The 0-2-1 order is confirmed by doing a projection of a triangle on the Y=0 plane
   //on a Y=0 plane
-  return Coordinat3D(
+  return boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>(
     boost::geometry::get<0>(point),
     boost::geometry::get<2>(point),
     boost::geometry::get<1>(point)

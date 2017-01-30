@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test_5)
 BOOST_AUTO_TEST_CASE(ribi_planez_test_6)
 {
   //if (verbose) TRACE("PlaneZ, preparation for Plane::CanCalcZ and Plane::IsInPlane, Z = 0 plane, zooming in");
-  const auto series = ::ribi::PlaneZ::GetTestSeries();
+  const auto series = GetTestSeries();
   for (const double i:series)
   {
     if (i == 0.0) continue;
@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test_8)
 BOOST_AUTO_TEST_CASE(ribi_planez_test_9)
 {
   //if (verbose) TRACE("CanCalcZ, Z = 1.0 plane, zooming in");
-  const auto series = ::ribi::PlaneZ::GetTestSeries();
+  const auto series = GetTestSeries();
   for (const double i:series)
   {
     if (i == 0.0) continue;
@@ -204,7 +204,7 @@ BOOST_AUTO_TEST_CASE(ribi_planez_test_10)
   const bool show_warning{false};
   //if (verbose) TRACE("PlaneZ, preparation for Plane::CanCalcZ and Plane::IsInPlane, Z = z plane, zooming in");
   //The height of the plane
-  const auto series = ::ribi::PlaneZ::GetTestSeries();
+  const auto series = GetTestSeries();
   for (const double z:series)
   {
     //The distance from the origin, will be used by the two construction points

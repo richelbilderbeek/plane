@@ -44,7 +44,7 @@ double ribi::PlaneX::CalcError(const Coordinat3D& coordinat) const noexcept
   return error;
 }
 
-ribi::PlaneX::Double ribi::PlaneX::CalcMinErrorPerC() noexcept
+ribi::PlaneX::Double ribi::PlaneX::CalcMinErrorPerCinPlaneX() noexcept
 {
   //min_error_per_c will be about 0.000000001
   //stub_value increases this jut a little, by a 0.000001%
@@ -114,8 +114,8 @@ ribi::PlaneX::Double ribi::PlaneX::CalcMinErrorPerC() noexcept
 
 double ribi::PlaneX::CalcMaxError(const Coordinat3D& /*coordinat*/) const noexcept
 {
-  assert(CalcMinErrorPerC() > double(0.0));
-  const double max_error{std::abs(CalcMinErrorPerC() * GetFunctionC())};
+  assert(CalcMinErrorPerCinPlaneX() > double(0.0));
+  const double max_error{std::abs(CalcMinErrorPerCinPlaneX() * GetFunctionC())};
   assert(max_error >= double(0.0));
   return max_error;
 }
@@ -126,7 +126,7 @@ ribi::PlaneX::Coordinats2D ribi::PlaneX::CalcProjection(
 {
   assert(m_plane_z);
   auto v(points);
-  for(auto& i: v) { i = Rotate(i); }
+  for(auto& i: v) { i = RotateInPlaneX(i); }
   try
   {
     return m_plane_z->CalcProjection(v);
@@ -158,9 +158,9 @@ std::unique_ptr<ribi::PlaneZ> ribi::PlaneX::Create(
 {
   std::unique_ptr<PlaneZ> p(
     new PlaneZ(
-      Rotate(p1),
-      Rotate(p2),
-      Rotate(p3)
+      RotateInPlaneX(p1),
+      RotateInPlaneX(p2),
+      RotateInPlaneX(p3)
     )
   );
   assert(p);
@@ -227,7 +227,8 @@ bool ribi::PlaneX::IsInPlane(const Coordinat3D& coordinat) const noexcept
   }
 }
 
-std::vector<double> ribi::PlaneX::Rotate(const Doubles& coefficients) noexcept
+std::vector<double> ribi::RotateInPlaneX(
+  const std::vector<double>& coefficients) noexcept
 {
   assert(coefficients.size() == 4);
   return
@@ -239,11 +240,11 @@ std::vector<double> ribi::PlaneX::Rotate(const Doubles& coefficients) noexcept
   };
 }
 
-ribi::PlaneX::Coordinat3D ribi::PlaneX::Rotate(
-  const Coordinat3D& point
+ribi::PlaneX::Coordinat3D ribi::RotateInPlaneX(
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& point
 ) noexcept
 {
-  return Coordinat3D(
+  return boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>(
     boost::geometry::get<1>(point),
     boost::geometry::get<2>(point),
     boost::geometry::get<0>(point)

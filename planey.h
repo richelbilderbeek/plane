@@ -99,21 +99,22 @@ struct PlaneY
   ///A PlaneY is actually a PlaneZ used with its coordinats rotated from (X,Y,Z) to (Z,Y,Y)
   std::unique_ptr<PlaneZ> m_plane_z;
 
-  ///Calculates m_min_error per GetFunctionC()
-  static Double CalcMinErrorPerC() noexcept;
-
-  static std::unique_ptr<PlaneZ> Create(
-    const Coordinat3D& p1,
-    const Coordinat3D& p2,
-    const Coordinat3D& p3
-  );
-
-  static Doubles Rotate(const Doubles& coefficients) noexcept;
-
-  static Coordinat3D Rotate(const Coordinat3D& point) noexcept;
-
   friend std::ostream& operator<<(std::ostream& os,const PlaneY& planey);
 };
+
+///Calculates m_min_error per GetFunctionC()
+double CalcMinErrorPerCinPlaneY() noexcept;
+
+std::unique_ptr<PlaneZ> Create(
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p1,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p2,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p3
+);
+
+std::vector<double> RotateInPlaneY(const std::vector<double>& coefficients) noexcept;
+
+boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>
+RotateInPlaneY(const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& point) noexcept;
 
 std::ostream& operator<<(std::ostream& os,const PlaneY& planey);
 

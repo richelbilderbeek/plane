@@ -203,7 +203,7 @@ BOOST_AUTO_TEST_CASE(ribi_plane_1)
 {
   //if (verbose) TRACE("CanCalcZ, Z = 0 plane, zooming in");
   //Sorted by difficulty
-  const auto series = PlaneZ::GetTestSeries();
+  const auto series = GetTestSeries();
   for (const double i:series)
   {
     if (i == 0.0) continue;
@@ -246,7 +246,7 @@ BOOST_AUTO_TEST_CASE(ribi_plane_2)
 
   */
   //if (verbose) TRACE("CanCalcZ, Z = z plane, varying height");
-  const auto series = PlaneZ::GetTestSeries();
+  const auto series = GetTestSeries();
   for (const double z:series)
   {
     const double i = 1.0;
@@ -299,7 +299,7 @@ BOOST_AUTO_TEST_CASE(ribi_plane_2)
 
 BOOST_AUTO_TEST_CASE(ribi_plane_3)
 {
-  const auto series = PlaneZ::GetTestSeries();
+  const auto series = GetTestSeries();
   //if (verbose) TRACE("CanCalcZ, Z = z plane, zooming in");
   const double min = 10e+8;
   const double max = 10e-8;
@@ -406,7 +406,7 @@ BOOST_AUTO_TEST_CASE(ribi_plane_5)
 BOOST_AUTO_TEST_CASE(ribi_plane_6)
 {
   //if (verbose) TRACE("IsInPlane, X = 0 plane, zooming in, #223");
-  const auto series = PlaneZ::GetTestSeries();
+  const auto series = GetTestSeries();
   for (const double i:series)
   {
     if (i == 0.0) continue;
@@ -483,7 +483,7 @@ BOOST_AUTO_TEST_CASE(ribi_plane_8)
 BOOST_AUTO_TEST_CASE(ribi_plane_9)
 {
   //if (verbose) TRACE("IsInPlane, Y = 0 plane, zooming in, #223");
-  const auto series = PlaneZ::GetTestSeries();
+  const auto series = GetTestSeries();
   for (const double i:series)
   {
     if (i == 0.0) continue;
@@ -527,7 +527,7 @@ BOOST_AUTO_TEST_CASE(ribi_plane_10)
   D = p4 = To be calculated
   */
   //if (verbose) TRACE("IsInPlane, Slope, Slope in Z direction");
-  const auto series = PlaneZ::GetTestSeries();
+  const auto series = GetTestSeries();
   for (double slope = 1.0; slope > 1.0e-8; slope /= 10.0)
   {
     //if (verbose) { TRACE(slope); }

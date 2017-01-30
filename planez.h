@@ -100,10 +100,6 @@ struct PlaneZ
   ///Checks if the coordinat is in the plane
   bool IsInPlane(const Coordinat3D& coordinat) const noexcept;
 
-  ///Obtain a testing series of doubles (to be used as coordinat elements)
-  ///in increasing order of difficulty
-  static std::vector<double> GetTestSeries() noexcept;
-
   ///Convert the Plane to function z(x,y), e.g
   ///'z=(2*x) + (3*y) + 5' (spaces exactly as shown)
   ///Where 2,3 and 5 can be obtained with GetFunctionA,GetFunctionB and GetFunctionC
@@ -114,16 +110,20 @@ struct PlaneZ
 
   //m_coefficients.size == 4
   Doubles m_coefficients;
-
-  ///Calculates m_min_error per GetFunctionC() to PlaneZ
-  static Double CalcMinErrorPerCinPlaneZ() noexcept;
-
-  static Doubles CalcPlaneZ(
-    const Coordinat3D& p1,
-    const Coordinat3D& p2,
-    const Coordinat3D& p3
-  ) noexcept;
 };
+
+///Calculates m_min_error per GetFunctionC() to PlaneZ
+double CalcMinErrorPerCinPlaneZ() noexcept;
+
+std::vector<double> CalcPlaneZ(
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p1,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p2,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p3
+) noexcept;
+
+///Obtain a testing series of doubles (to be used as coordinat elements)
+///in increasing order of difficulty
+std::vector<double> GetTestSeries() noexcept;
 
 std::ostream& operator<<(std::ostream& os,const PlaneZ& planez);
 

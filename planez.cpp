@@ -77,7 +77,7 @@ double ribi::PlaneZ::CalcError(const Coordinat3D& coordinat) const noexcept
   return error;
 }
 
-ribi::PlaneZ::Double ribi::PlaneZ::CalcMinErrorPerCinPlaneZ() noexcept
+ribi::PlaneZ::Double ribi::CalcMinErrorPerCinPlaneZ() noexcept
 {
   //min_error_per_c will be about 0.000000001
   //stub_value increases this jut a little, by a 0.000001%
@@ -151,10 +151,10 @@ double ribi::PlaneZ::CalcMaxError(const Coordinat3D& /*coordinat*/) const noexce
   return max_error;
 }
 
-std::vector<double> ribi::PlaneZ::CalcPlaneZ(
-  const Coordinat3D& p1,
-  const Coordinat3D& p2,
-  const Coordinat3D& p3
+std::vector<double> ribi::CalcPlaneZ(
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p1,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p2,
+  const boost::geometry::model::point<double,3,boost::geometry::cs::cartesian>& p3
 ) noexcept
 {
   
@@ -218,11 +218,6 @@ ribi::PlaneZ::Double ribi::PlaneZ::CalcZ(const Double& x, const Double& y) const
   const double term1 = -a*x;
   const double term2 = -b*y;
   const double numerator = term1 + term2 + d;
-  /* if (verbose)
-  {
-    // TRACE(numerator);
-    // TRACE(c);
-  } */
   const double result = numerator / c;
   return result;
 }
@@ -271,7 +266,7 @@ double ribi::PlaneZ::GetFunctionC() const
   }
 }
 
-std::vector<double> ribi::PlaneZ::GetTestSeries() noexcept
+std::vector<double> ribi::GetTestSeries() noexcept
 {
   return
   {

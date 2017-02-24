@@ -1,5 +1,4 @@
-INCLUDEPATH += \
-    ../plane
+INCLUDEPATH += $$PWD
 
 SOURCES += \
     $$PWD/plane.cpp \

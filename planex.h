@@ -1,6 +1,7 @@
 #ifndef RIBI_PLANEX_H
 #define RIBI_PLANEX_H
 
+#include <memory>
 #include <vector>
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"

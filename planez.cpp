@@ -31,15 +31,11 @@ ribi::PlaneZ::PlaneZ(
 
   if (m_coefficients[2] == 0.0)
   {
-    // if (verbose) { /* TRACE(Container().ToStr(m_coefficients)); */}
     throw std::logic_error("PlaneZ (from coeffients) cannot be expressed in less than 3D space");
   }
 
   try
   {
-    //TRACE(GetFunctionA());
-    //TRACE(GetFunctionB());
-    //TRACE(GetFunctionC());
     assert(GetFunctionA() == 0.0 || GetFunctionA() != 0.0);
     assert(GetFunctionB() == 0.0 || GetFunctionB() != 0.0);
     assert(GetFunctionC() == 0.0 || GetFunctionC() != 0.0);
@@ -61,7 +57,6 @@ ribi::PlaneZ::PlaneZ(
 
   if (m_coefficients[2] == 0.0)
   {
-    // if (verbose) { /* TRACE(Container().ToStr(m_coefficients)); */}
     throw std::logic_error("Plane (from points) that can be expressed in less than 3D space");
   }
 }
@@ -120,22 +115,11 @@ ribi::PlaneZ::Double ribi::CalcMinErrorPerCinPlaneZ() noexcept
           if (error_per_c > min_error_per_c)
           {
             min_error_per_c = error_per_c;
-            //TRACE(min_error_per_c);
-            //TRACE(x);
-            //TRACE(y);
-            //TRACE(z);
-            //TRACE(p.GetFunctionC());
-            //TRACE(double(min_error_per_c) / p.GetFunctionC());
-            //std::stringstream s;
-            //s << Geometry().ToStr(p4) << " " << min_error;
-            //TRACE(s.str());
           }
         }
       }
     }
-    //TRACE(min_error_per_c);
   }
-  //TRACE(min_error_per_c);
   assert(min_error_per_c > zero);
   assert(min_error_per_c < stub_value);
   assert(min_error_per_c > 0.99 * stub_value);
@@ -229,10 +213,6 @@ double ribi::PlaneZ::GetFunctionA() const
   const auto coeff_c = m_coefficients[2];
   static const double zero(0.0);
   assert(coeff_c != zero);
-  /* if (verbose)
-  {
-    // TRACE(coeff_c);
-  } */
   const auto a = -coeff_a/coeff_c;
   return a;
 }
@@ -314,8 +294,6 @@ bool ribi::PlaneZ::IsInPlane(const Coordinat3D& coordinat) const noexcept
   }
   catch (std::exception& e)
   {
-    // TRACE("ERROR");
-    // TRACE(e.what());
     assert(!"Should not get here");
     throw;
   }

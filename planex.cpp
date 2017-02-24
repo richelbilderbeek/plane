@@ -85,26 +85,14 @@ ribi::PlaneX::Double ribi::CalcMinErrorPerCinPlaneX() noexcept
           const auto error = p.CalcError(p4);
           const auto error_per_c = error / p.GetFunctionC();
           assert(error_per_c >= zero);
-          //TRACE(double(min_error_per_c) / p.GetFunctionC());
           if (error_per_c > min_error_per_c)
           {
             min_error_per_c = error_per_c;
-            //TRACE(min_error_per_c);
-            //TRACE(x);
-            //TRACE(y);
-            //TRACE(z);
-            //TRACE(p.GetFunctionC());
-            //TRACE(double(min_error_per_c) / p.GetFunctionC());
-            //std::stringstream s;
-            //s << Geometry().ToStr(p4) << " " << min_error;
-            //TRACE(s.str());
           }
         }
       }
     }
-    //TRACE(min_error_per_c);
   }
-  //TRACE(min_error_per_c); //0.000000001e0
   assert(min_error_per_c > zero);
   assert(min_error_per_c < stub_value);
   assert(min_error_per_c > 0.99 * stub_value);
@@ -220,8 +208,6 @@ bool ribi::PlaneX::IsInPlane(const Coordinat3D& coordinat) const noexcept
   }
   catch (std::exception& e)
   {
-    // TRACE("ERROR");
-    // TRACE(e.what());
     assert(!"Should not get here");
     throw;
   }

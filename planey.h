@@ -2,6 +2,7 @@
 #define RIBI_PLANEY_H
 
 #include <vector>
+#include <memory>
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"

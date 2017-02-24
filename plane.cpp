@@ -111,55 +111,7 @@ ribi::Plane::Coordinats2D ribi::Plane::CalcProjection(
   try { if (CanCalcZ()) { return m_plane_z.front().CalcProjection(points); }}
   catch (std::logic_error&) { /* OK, try next plane */ }
 
-  // TRACE("ERROR");
-  // TRACE("INITIAL POINTS");
-  /* for (const auto& point: m_points)
-  {
-    std::stringstream s;
-    s
-      << "("
-      << boost::geometry::get<0>(point) << ","
-      << boost::geometry::get<1>(point) << ","
-      << boost::geometry::get<2>(point)
-      << ")"
-    ;
-    // TRACE(s.str());
-  } */
 
-  /* TRACE(points.size());
-  {
-    if (m_plane_x)
-    {
-      // try { TRACE(*m_plane_x); } catch(std::logic_error&) { TRACE("Failed m_plane_x"); }
-      // try { m_plane_x.front().CalcProjection(points); } catch (std::logic_error&) { TRACE("Failed m_plane_x.front().CalcProjection"); }
-    }
-  }
-  {
-    if (m_plane_y)
-    {
-      // try { TRACE(*m_plane_y); } catch(std::logic_error&) { TRACE("Failed m_plane_y"); }
-      // try { m_plane_y.front().CalcProjection(points); } catch (std::logic_error&) { TRACE("Failed m_plane_y.front().CalcProjection"); }
-    }
-  }
-  {
-    if (m_plane_z)
-    {
-      // try { TRACE(*m_plane_z); } catch(std::logic_error&) { TRACE("Failed m_plane_z"); }
-      // try { m_plane_z.front().CalcProjection(points); } catch (std::logic_error&) { TRACE("Failed m_plane_z.front().CalcProjection"); }
-    }
-  } */
-  /* for (const auto& point: points)
-  {
-    std::stringstream s;
-    s
-      << "("
-      << boost::geometry::get<0>(point) << ","
-      << boost::geometry::get<1>(point) << ","
-      << boost::geometry::get<2>(point)
-      << ")"
-    ;
-    // TRACE(s.str());
-  } */
   assert(!"Should not get here");
   throw std::logic_error("Plane::CalcProjection: unexpected behavior");
 }
@@ -288,15 +240,6 @@ bool ribi::Plane::IsInPlane(const Coordinat3D& coordinat) const noexcept
   };
   #ifndef NDEBUG
   const bool has_error_below_max = CalcError(coordinat) <= CalcMaxError(coordinat);
-  /* if (is_in_plane != has_error_below_max)
-  {
-    // TRACE("ERROR");
-    // TRACE(is_in_plane);
-    // TRACE(has_error_below_max);
-    // TRACE(CalcError(coordinat));
-    // TRACE(CalcMaxError(coordinat));
-    // TRACE("BREAK");
-  } */
   assert(is_in_plane == has_error_below_max);
   #endif
   return is_in_plane;

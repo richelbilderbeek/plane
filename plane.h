@@ -2,7 +2,6 @@
 #define RIBI_PLANE_H
 
 #include <vector>
-#include "apfloat.h"
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"

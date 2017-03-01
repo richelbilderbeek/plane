@@ -6,7 +6,6 @@
 
 #include <cassert>
 
-//#include "container.h"
 #include "geometry.h"
 #include "planex.h"
 #include "planey.h"

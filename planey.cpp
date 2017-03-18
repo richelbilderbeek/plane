@@ -200,7 +200,7 @@ bool ribi::PlaneY::IsInPlane(const Coordinat3D& coordinat) const noexcept
   catch (std::exception& e)
   {
     assert(!"Should not get here");
-    throw;
+    return false;
   }
 }
 

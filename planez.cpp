@@ -5,8 +5,8 @@
 #include "planez.h"
 
 #include <cassert>
+#include <stdexcept>
 
-//#include "container.h"
 #include "geometry.h"
 // 
 #pragma GCC diagnostic pop
@@ -295,7 +295,7 @@ bool ribi::PlaneZ::IsInPlane(const Coordinat3D& coordinat) const noexcept
   catch (std::exception& e)
   {
     assert(!"Should not get here");
-    throw;
+    return false;
   }
 }
 

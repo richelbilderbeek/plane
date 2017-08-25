@@ -10,9 +10,6 @@ include(plane_test.pri)
 SOURCES += main_test_console.cpp
 
 # C++14
-QMAKE_CXX = g++-5
-QMAKE_LINK = g++-5
-QMAKE_CC = gcc-5
 CONFIG += c++14
 QMAKE_CXXFLAGS += -std=c++14
 
@@ -53,3 +50,9 @@ LIBS += \
 
 # QResources give this error
 QMAKE_CXXFLAGS += -Wno-unused-variable
+
+# Fixes
+#/usr/include/boost/math/constants/constants.hpp:277: error: unable to find numeric literal operator 'operator""Q'
+#   BOOST_DEFINE_MATH_CONSTANT(half, 5.000000000000000000000000000000000000e-01, "5.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e-01")
+#   ^
+QMAKE_CXXFLAGS += -fext-numeric-literals

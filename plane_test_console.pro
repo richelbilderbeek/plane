@@ -13,6 +13,9 @@ SOURCES += main_test_console.cpp
 CONFIG += c++14
 QMAKE_CXXFLAGS += -std=c++14
 
+# Fix error: unrecognized option '--push-state--no-as-needed'
+QMAKE_LFLAGS += -fuse-ld=gold
+
 # High warning levels
 # -Wshadow goes bad with apfloat
 QMAKE_CXXFLAGS += -Wall -Wextra -Wnon-virtual-dtor -pedantic -Werror

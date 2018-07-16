@@ -1,7 +1,7 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
+
+
+
 #include "planex.h"
 
 #include <cassert>
@@ -10,7 +10,7 @@
 #include "geometry.h"
 #include "planez.h"
 // 
-#pragma GCC diagnostic pop
+
 
 ///Create plane X = 0.0
 ribi::PlaneX::PlaneX() noexcept

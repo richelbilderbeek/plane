@@ -2,17 +2,17 @@
 #define RIBI_PLANE_H
 
 #include <vector>
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
+
+
+
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/point_xy.hpp>
 #ifndef _WIN32
 #include <boost/geometry/geometries/polygon.hpp>
 #endif
 
-#pragma GCC diagnostic pop
+
 #include "planex.h"
 #include "planey.h"
 #include "planez.h"

@@ -1,7 +1,7 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
+
+
+
 #include "planey.h"
 
 #include <cassert>
@@ -9,7 +9,7 @@
 #include "geometry.h"
 #include "planez.h"
 // 
-#pragma GCC diagnostic pop
+
 
 ribi::PlaneY::PlaneY() noexcept
   : PlaneY(

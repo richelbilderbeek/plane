@@ -20,16 +20,16 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------
 #include <boost/test/unit_test.hpp>
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
+
+
+
 #include "planex.h"
 
 #include "container.h"
 #include "geometry.h"
 #include "planez.h"
-#pragma GCC diagnostic pop
+
 
 BOOST_AUTO_TEST_CASE(ribi_planex_test)
 {

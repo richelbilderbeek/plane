@@ -1,7 +1,7 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#pragma GCC diagnostic ignored "-Wunused-but-set-parameter"
+
+
+
+
 #include "plane.h"
 
 #include <cassert>
@@ -11,7 +11,7 @@
 #include "planey.h"
 #include "planez.h"
 // 
-#pragma GCC diagnostic pop
+
 
 ribi::Plane::Plane(
   const Coordinat3D& p1,

@@ -4,12 +4,7 @@
 #include <memory>
 #include <vector>
 
-
-
-
 #include <boost/geometry/geometries/point_xy.hpp>
-//#include "planez.h"
-
 
 namespace ribi {
 

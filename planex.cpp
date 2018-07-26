@@ -1,16 +1,9 @@
-
-
-
-
 #include "planex.h"
 
 #include <cassert>
 
-//#include "container.h"
 #include "geometry.h"
 #include "planez.h"
-// 
-
 
 ///Create plane X = 0.0
 ribi::PlaneX::PlaneX() noexcept

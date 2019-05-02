@@ -27,13 +27,6 @@ addons:
 services:
   - xvfb
 
-# Trusty
-# Start virtual X server
-# before_script:
-#  - "export DISPLAY=:99.0"
-#  - "sh -e /etc/init.d/xvfb start"
-#  - sleep 3 # give xvfb some time to start
-
 script: 
   - ./download_other_githubs
   - qmake plane_test_console.pro

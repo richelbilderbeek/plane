@@ -4,6 +4,8 @@
 #include "container.h"
 #include "geometry.h"
 
+#include <iostream>
+
 using namespace ribi;
 using boost::geometry::get;
 using Coordinat2D = ribi::PlaneZ::Coordinat2D;

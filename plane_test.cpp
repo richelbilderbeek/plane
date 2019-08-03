@@ -11,6 +11,7 @@
 #include "planey.h"
 #include "planez.h"
 
+#include <iostream>
 using namespace ribi;
 using Coordinat3D = ::ribi::Plane::Coordinat3D;
 

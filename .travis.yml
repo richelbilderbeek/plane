@@ -17,7 +17,7 @@ services:
 script: 
   - ./download_other_githubs
   - qmake plane_test_console.pro
-  - make debug
+  - make --silent debug
   - ./plane_test_console
   #- qmake plane_test_apfloat.pro
   #- make debug

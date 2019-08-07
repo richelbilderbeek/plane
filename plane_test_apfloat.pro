@@ -11,7 +11,7 @@ include(../RibiClasses/CppRibiRegex/CppRibiRegex.pri)
 #
 SOURCES += main_test_console.cpp
 
-# C++17
+
 CONFIG += c++17
 QMAKE_CXXFLAGS += -std=c++17
 

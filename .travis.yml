@@ -22,7 +22,7 @@ script:
   #- qmake plane_test_apfloat.pro
   #- make debug
   # Codecov
-  - ./get_code_cov
-  - codecov
+  - ./get_code_cov >/dev/null
+  - codecov >/dev/null
   # OCLint
   - ./do_oclint
